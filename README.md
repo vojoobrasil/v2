@@ -45,8 +45,8 @@ Criando uma imagem do instalador do WhaTicket na pasta raiz
 ```bash
 cd ~
 sudo git clone https://github.com/vojoobrasil/v2.git
-sudo chmod +x ./whaticket_installer/whaticket
-cd ./whaticket_installer
+sudo chmod +x ./v2/whaticket
+cd ./v2
 sudo ./whaticket
 ```
 
