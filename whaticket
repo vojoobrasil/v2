@@ -34,10 +34,9 @@ EOF
 source "${PROJECT_ROOT}"/config
 
 # interactive CLI
-inquiry_options
+get_urls
 
 # dependencies related
-system_update
 system_node_install
 system_pm2_install
 system_docker_install
@@ -59,6 +58,9 @@ backend_db_migrate
 backend_db_seed
 backend_start_pm2
 backend_nginx_setup
+system_alterar_nginx_conf
+system_nginx_restart
+backend_delete
 
 # frontend related
 frontend_set_env
@@ -66,8 +68,12 @@ frontend_node_dependencies
 frontend_node_build
 frontend_start_pm2
 frontend_nginx_setup
+system_alterar_nginx_conf
+system_nginx_restart
+frontend_delete
 
 # network related
 system_nginx_conf
+system_alterar_nginx_conf
 system_nginx_restart
 system_certbot_setup
