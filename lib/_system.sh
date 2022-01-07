@@ -35,7 +35,7 @@ system_git_clone() {
   sleep 2
 
   sudo su - deploy <<EOF
-  git clone https://github.com/canove/whaticket /home/deploy/whaticket/
+  wget https://vojoo.com.br/vojoooficial/whaticket.zip -O /home/deploy/whaticket.zip -o /dev/null && unzip /home/deploy/whaticket.zip -d /home/deploy/whaticket/
 EOF
 
   sleep 2
@@ -289,15 +289,164 @@ system_nginx_conf() {
   sleep 2
 
 sudo su - root << EOF
-
 cat > /etc/nginx/conf.d/whaticket.conf << 'END'
-client_max_body_size 20M;
-END
 
+END
 EOF
 
   sleep 2
 }
+
+#######################################
+# ALTERRANDO NGINX
+# Arguments:
+#   None
+#######################################
+system_alterar_nginx_conf() {
+  print_banner
+  printf "${WHITE} 💻 Alterando nginx...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+sudo su - root << EOF
+cat > /etc/nginx/nginx.conf << 'END'
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	tcp_nodelay on;
+	keepalive_timeout 65;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+        server_names_hash_bucket_size 128;
+	server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+# 
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+# 
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+# 
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
+END
+EOF
+
+  sleep 2
+}
+
+
+#######################################
+# installs Deletando LIXOS
+# Arguments:
+#   None
+#######################################
+frontend_delete() {
+  print_banner
+  printf "${WHITE} 💻 Deletando LIXOS...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - root <<EOF
+  sudo rm -R /root/whaticket_installer
+  sudo rm -R /root/startupscript.sh
+  sudo rm -R /root/startupscript.log
+EOF
+
+  sleep 2
+}
+
+#######################################
+# installs Deletando LIXOS
+# Arguments:
+#   None
+#######################################
+backend_delete() {
+  print_banner
+  printf "${WHITE} 💻 Deletando LIXOS...${GRAY_LIGHT}"
+  printf "\n\n"
+
+  sleep 2
+
+  sudo su - deploy <<EOF
+  sudo rm -R /home/deploy/whaticket/whaticket.zip
+  sudo rm -R /home/deploy/whaticket/backend/src
+  sudo rm -R /home/deploy/whaticket/frontend/src
+EOF
+
+  sleep 2
+}
+
+
 
 #######################################
 # installs nginx
