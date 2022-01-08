@@ -62,13 +62,14 @@ PROXY_PORT=443
 PORT=8080
 
 DB_HOST=localhost
-DB_DIALECT=
+DB_DIALECT=mysql
 DB_USER=${db_user}
 DB_PASS=${db_pass}
 DB_NAME=${db_name}
 
-JWT_SECRET=${jwt_secret}
-JWT_REFRESH_SECRET=${jwt_refresh_secret}
+JWT_SECRET=3123123213123
+JWT_REFRESH_SECRET=75756756756
+CHROME_BIN=/usr/bin/google-chrome-st
 [-]EOF
 EOF
 
